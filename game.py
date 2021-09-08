@@ -33,6 +33,7 @@ class Game():
 
     def update(self, task):
         dt = globalClock.getDt()
+        self.mainChar.Update(dt)
         self.world.doPhysics(dt)
         return task.cont
     
