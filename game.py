@@ -5,6 +5,7 @@ from panda3d.bullet import BulletPlaneShape
 from panda3d.bullet import BulletRigidBodyNode
 from panda3d.bullet import BulletBoxShape
 from mainChar import MainChar
+from solidObject import SolidObject
 
 class Game():
     def __init__(self):
@@ -14,7 +15,7 @@ class Game():
 
         self.loadWorld()
         self.mainChar = MainChar()
-        self.world.attachRigidBody(self.mainChar.node)
+        self.world.attachRigidBody(self.mainChar.box.node)
         
         taskMgr.add(self.update, 'update')
         base.run()
@@ -27,16 +28,8 @@ class Game():
 
         #Load environment
             #Ground
-        shape = BulletBoxShape(Vec3(50, 50, 1))
-        node = BulletRigidBodyNode('Ground')
-        node.addShape(shape)
-        np = render.attachNewNode(node)
-        model = loader.loadModel('Assets/Blender_egg/ground')
-        model.setColor(0.3,0.5,0.3,0)
-        model.setPos(0,0,1)
-        np.setPos(0, 0, 0)
-        model.reparentTo(np)
-        self.world.attachRigidBody(node)
+        ground = SolidObject('Assets/Blender_egg/ground', color=(0.3,0.5,0.3,0), posAss=(0,0,1), dimBox=Vec3(50, 50, 1), weight=0, posBox=(0, 0, 0))
+        self.world.attachRigidBody(ground.node)
 
     def update(self, task):
         dt = globalClock.getDt()
