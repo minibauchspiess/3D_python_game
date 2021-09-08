@@ -12,6 +12,7 @@ class MainChar():
         #Create character image and physics box
         self.box = SolidObject(asset, color=(0.5, 0.5, 1, 0), posAss=(0, 0, 2), dimBox=Vec3(1, 1, 2), weight=1.0, posBox=(0, 0, 20))
         
+        self.MovementSettings()
     
     #Update movement state
     def UpdateKeyMap(self, key, state):
@@ -25,10 +26,11 @@ class MainChar():
     def MovementSettings(self):
         #Possible keyboard inputs
         self.keybDic = {
-            "up" : False,
-            "down" : False,
-            "left" : False,
-            "right" : False,
+            "up" : 0,
+            "down" : 0,
+            "left" : 0,
+            "right" : 0,
+            "jump" : 0
         }
 
         #Speed attributes
@@ -37,16 +39,26 @@ class MainChar():
         self.speedZ = 0
 
         #Set keyboard call functions
-        self.accept("arrow_left", UpdateKeyMap, ["left", True])
-        self.accept("arrow_left-up", UpdateKeyMap, ["left", False])
+        base.accept("arrow_left", self.UpdateKeyMap, ["left", MAX_X_SPEED])
+        base.accept("arrow_left-up", self.UpdateKeyMap, ["left", 0])
         
-        self.accept("arrow_right", UpdateKeyMap, ["right", True])
-        self.accept("arrow_right-up", UpdateKeyMap, ["right", False])
+        base.accept("arrow_right", self.UpdateKeyMap, ["right", MAX_X_SPEED])
+        base.accept("arrow_right-up", self.UpdateKeyMap, ["right", 0])
         
-        self.accept("arrow_up", UpdateKeyMap, ["up", True])
-        self.accept("arrow_up-up", UpdateKeyMap, ["up", False])
+        base.accept("arrow_up", self.UpdateKeyMap, ["up", MAX_Y_SPEED])
+        base.accept("arrow_up-up", self.UpdateKeyMap, ["up", 0])
         
-        self.accept("arrow_down", UpdateKeyMap, ["down", True])
-        self.accept("arrow_down-up", UpdateKeyMap, ["down", False])
+        base.accept("arrow_down", self.UpdateKeyMap, ["down", MAX_Y_SPEED])
+        base.accept("arrow_down-up", self.UpdateKeyMap, ["down", 0])
+
+        base.accept("space", self.UpdateKeyMap, ["jump", MAX_Z_SPEED])
+        base.accept("space-up", self.UpdateKeyMap, ["jump", 0])
+    
+    def Update(self, dt):
+        pos = self.box.np.getPos()
+        pos.x += (self.keybDic["right"]-self.keybDic["left"])*dt
+        pos.y += (self.keybDic["up"]-self.keybDic["down"])*dt
+        pos.z += self.keybDic["jump"]*dt
+        self.box.np.setPos( pos )
 
 
