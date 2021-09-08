@@ -1,6 +1,7 @@
 from panda3d.core import Vec3
 from panda3d.bullet import BulletRigidBodyNode
 from panda3d.bullet import BulletBoxShape
+from solidObject import SolidObject
 
 MAX_X_SPEED = 20
 MAX_Y_SPEED = 20
@@ -9,17 +10,8 @@ MAX_Z_SPEED = 40
 class MainChar():
     def __init__(self, asset='Assets/Blender_egg/gelo'):
         #Create character image and physics box
-        shape = BulletBoxShape(Vec3(1, 1, 2))
-        self.node = BulletRigidBodyNode('Box')
-        self.node.setMass(1.0)
-        self.node.addShape(shape)
-        self.np = render.attachNewNode(self.node)
-        self.model = loader.loadModel('Assets/Blender_egg/gelo')
-        self.model.flattenLight()
-        self.model.setColor(0.5,0.5,1,0)
-        self.np.setPos(0, 0, 20)
-        self.model.setPos(0, 0, -2)
-        self.model.reparentTo(self.np)
+        self.box = SolidObject(asset, color=(0.5, 0.5, 1, 0), posAss=(0, 0, 2), dimBox=Vec3(1, 1, 2), weight=1.0, posBox=(0, 0, 20))
+        
     
     #Update movement state
     def UpdateKeyMap(self, key, state):
