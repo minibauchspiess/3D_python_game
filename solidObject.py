@@ -2,10 +2,6 @@ from panda3d.core import Vec3
 from panda3d.bullet import BulletRigidBodyNode
 from panda3d.bullet import BulletBoxShape
 
-MAX_X_SPEED = 20
-MAX_Y_SPEED = 20
-MAX_Z_SPEED = 40
-
 class SolidObject():
     def __init__(self, asset, color, posAss, dimBox, weight, posBox, physics=True):
         self.model = self.addModel(asset, color, posAss)
